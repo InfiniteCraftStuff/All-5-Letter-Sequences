@@ -138,16 +138,12 @@ def get_all_stats():
 
 
 def process_everything():
-	# Process directory where files are separated by letter
-	subdirectory_name = 'yui-db'  # Example subdirectory (can change to any other subdirectory)
-	process_directory_by_letter(subdirectory_name)
-
-	# Process a single file and split sequences by letter
-	file_path = os.path.join(FOUND_FILES_PATH, 'other', 'all5lws_alive.txt')  # Example file
+	file_path = os.path.join(FOUND_FILES_PATH, 'other', 'alive-5-letter-elements-25-03-02-20-56-28.txt')
 	process_single_file(file_path)
 
 
 def main():
+	process_everything()
 	get_all_stats()
 
 
