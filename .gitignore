@@ -1,5 +1,8 @@
-revive.js
 *.log
+*.pyc
+
 .env
-/__main__.py
-/found-files/other/
+
+revive.js
+
+/found-files

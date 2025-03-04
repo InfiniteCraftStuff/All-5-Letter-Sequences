@@ -9,7 +9,8 @@ DB_SEQUENCES_PATH = os.path.join(BASE_DIR, 'databases', 'sequences')
 
 
 def connect_db(letter: str):
-	return sqlite3.connect(os.path.join(DB_SEQUENCES_PATH, f'{letter}.db'))
+	db_path = os.path.join(DB_SEQUENCES_PATH, f'{letter}.db')
+	return sqlite3.connect(db_path)
 
 
 def get_is_found(sequence: str) -> bool | None:
@@ -39,8 +40,7 @@ def update_sequences(letter: str, sequences: Iterable[str], is_found=True):
 		conn.commit()
 
 
-def get_sequences_from_file(file_rel_path: Iterable[str]) -> list[str]:
-	file_path = os.path.join(BASE_DIR, *file_rel_path)
+def get_sequences_from_file(file_path: str) -> list[str]:
 	try:
 		with open(file_path, 'r') as file:
 			return [line.strip().lower() for line in file if line.strip()]  # Convert to lowercase while reading

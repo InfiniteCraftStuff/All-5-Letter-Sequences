@@ -5,10 +5,6 @@ import logging
 from database import update_sequences, get_sequences_from_file
 
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-FOUND_FILES_PATH = os.path.join(BASE_DIR, 'found-files')
-
-
 def process_batch(letter: str, sequences: list[str]):
 	grouped_sequences: list[list[str]] = [[] for _ in range(26)]
 
@@ -43,11 +39,12 @@ def process_directory_by_letter(subdirectory_name: str):
 			process_letter(letter, sequences)
 
 
-def process_single_file(file_rel_path: Iterable[str]):
+def process_single_file(file_path: str):
 	"""Process a single file, splitting sequences by letter and then processing them."""
-	logging.info(f'\n--- Processing single file: {file_rel_path[-1]} ---')
+	file_name = os.path.basename(file_path)
+	logging.info(f'\n--- Processing single file: {file_name} ---')
 
-	sequences = get_sequences_from_file(file_rel_path)
+	sequences = get_sequences_from_file(file_path)
 	if not sequences:
 		logging.info('No sequences found. Skipping.\n')
 		return
