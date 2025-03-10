@@ -1,6 +1,5 @@
 import os
 from time import time
-from typing import Iterable
 import logging
 from database import update_sequences, get_sequences_from_file
 
@@ -10,6 +9,10 @@ def process_batch(letter: str, sequences: list[str]):
 
 	for seq in sequences:
 		seq = seq.lower()
+		index = ord(seq[1]) - 97
+		if index < 0 or index >= 26:
+			logging.error(f'Invalid sequence {seq} for letter {letter}. Skipping.')
+			continue
 		grouped_sequences[ord(seq[1]) - 97].append(seq)
 
 	for batch in grouped_sequences:
