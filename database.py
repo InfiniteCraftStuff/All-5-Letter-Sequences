@@ -42,7 +42,7 @@ def update_sequences(letter: str, sequences: Iterable[str], is_found=True):
 
 def get_sequences_from_file(file_path: str) -> list[str]:
 	try:
-		with open(file_path, 'r') as file:
+		with open(file_path, 'r', encoding='utf-8') as file:
 			return [line.strip().lower() for line in file if line.strip()]  # Convert to lowercase while reading
 	except FileNotFoundError:
 		logging.warning(f'File not found: {file_path}')
