@@ -10,6 +10,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FOUND_FILES_PATH = os.path.join(BASE_DIR, 'found-files')
 LOG_FILE_PATH = os.path.join(BASE_DIR, 'console.log')
 ENV_FILE_PATH = os.path.join(BASE_DIR, '.env')
+STATS_FILE_PATH = os.path.join(BASE_DIR, 'STATS.md')
 
 
 logging.basicConfig(
@@ -23,36 +24,54 @@ logging.basicConfig(
 )
 
 
-def split_array(array: list, chunk_size: int):
-	return [array[i:i + chunk_size] for i in range(0, len(array), chunk_size)]
-
-
-def copy_for_reviving():
-	not_found = get_not_found_sequences('a', 'a')
-	chunks = split_array(not_found, 64)
-	data = '\n\n'.join(map(lambda x: f'await revive(`{'\\n'.join(x)}`);', chunks))
-	copy(data)
-
-
 def get_all_stats():
+	# Initialize variables
+	letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+	stats = {}
 	total_overall, found_overall = 0, 0
 
-	for letter in 'abcdefghijklmnopqrstuvwxyz':
+	# Step 1: Collect statistics for all letters
+	for letter in letters:
 		total, found, percentage = get_statistics(letter)
-		logging.info(f'Letter {letter}: {found:<7,} / {total:,} sequences found ({percentage:.2f}%)')
-
+		stats[letter] = (total, found, percentage)
 		total_overall += total
 		found_overall += found
+		logging.info(f'Letter {letter.upper()}: {found:<7,} / {total:,} sequences found ({percentage:.2f}%)')
 
+	# Calculate overall percentage
 	overall_percentage = (found_overall / total_overall * 100) if total_overall else 0
 	logging.info('\n--- Overall Statistics ---')
 	logging.info(f'Total: {found_overall:,} / {total_overall:,} sequences found ({overall_percentage:.2f}%)\n\n')
 
+	# Step 2: Construct the table
+	stats_lines = [
+		"# Stats\n\n",
+		"| Letter | Found    | Percentage | Letter | Found    | Percentage |\n",
+		"|--------|----------|------------|--------|----------|------------|\n"
+	]
+
+	# Pair letters: A with N, B with O, ..., M with Z
+	for k in range(13):  # 0 to 12 covers all 13 pairs
+		letter1 = letters[k]        # A to M (positions 0 to 12)
+		letter2 = letters[k + 13]   # N to Z (positions 13 to 25)
+		found1, percentage1 = stats[letter1][1], stats[letter1][2]
+		found2, percentage2 = stats[letter2][1], stats[letter2][2]
+		row = f"| {letter1.upper():<6} | {found1:<8,} | {percentage1:>9.2f}% | {letter2.upper():<6} | {found2:<8,} | {percentage2:>9.2f}% |\n"
+		stats_lines.append(row)
+
+	# Add overall statistics
+	stats_lines.append("\n| Total Sequences Found | Percentage |\n")
+	stats_lines.append("|-----------------------|------------|\n")
+	stats_lines.append(f"| {found_overall:<21,} | {overall_percentage:>9.2f}% |\n")
+
+	# Step 3: Write to STATS.md
+	with open(STATS_FILE_PATH, 'w') as stats_file:
+		stats_file.writelines(stats_lines)
+
 
 def process_everything():
-	sub_directory = 'other'
-	for file_name in os.listdir(os.path.join(FOUND_FILES_PATH, sub_directory)):
-		file_path = os.path.join(FOUND_FILES_PATH, sub_directory, file_name)
+	for file_name in os.listdir(FOUND_FILES_PATH):
+		file_path = os.path.join(FOUND_FILES_PATH, file_name)
 		process_single_file(file_path)
 
 

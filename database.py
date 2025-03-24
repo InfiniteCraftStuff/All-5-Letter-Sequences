@@ -60,12 +60,12 @@ def get_not_found_sequences(letter: str, second_letter: str) -> list[str]:
 
 
 def get_statistics(letter: str):
-	with connect_db(letter) as conn:
+	with connect_db(letter.lower()) as conn:
 		cursor = conn.cursor()
 		total, found = 0, 0
 
 		for second_letter in 'abcdefghijklmnopqrstuvwxyz':
-			table_name = f'"{letter}{second_letter}"'
+			table_name = f'"{letter.lower()}{second_letter}"'
 			total_query = f'SELECT COUNT(*) FROM {table_name}'
 			found_query = f'SELECT COUNT(*) FROM {table_name} WHERE found = 1'
 

@@ -31,17 +31,6 @@ def process_letter(letter: str, sequences: list[str]):
 	logging.info(f'--- Completed letter {letter} in {time() - start_time:.2f} seconds ---\n')
 
 
-def process_directory_by_letter(subdirectory_name: str):
-	"""Process directory where files are already separated by letters."""
-	logging.info(f'\n--- Processing directory {subdirectory_name} where files are separated by letter ---')
-
-	for letter in 'abcdefghijklmnopqrstuvwxyz':
-		file_rel_path = subdirectory_name, f'{letter}.txt'
-		sequences = get_sequences_from_file(file_rel_path)
-		if sequences:
-			process_letter(letter, sequences)
-
-
 def process_single_file(file_path: str):
 	"""Process a single file, splitting sequences by letter and then processing them."""
 	file_name = os.path.basename(file_path)
