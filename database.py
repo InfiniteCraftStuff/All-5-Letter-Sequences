@@ -19,7 +19,7 @@ def get_is_found(sequence: str) -> bool | None:
 		raise ValueError('Sequence must be 5 letters')
 
 	table_name = f'"{sequence[:2]}"'
-	query = f'SELECT found FROM {table_name} WHERE sequence = ?'
+	query = f'SELECT found FROM {table_name.lower()} WHERE sequence = ?'
 
 	with connect_db(sequence[0]) as conn:
 		cursor = conn.cursor()
@@ -34,7 +34,7 @@ def update_sequences(letter: str, sequences: Iterable[str], is_found=True):
 	table_name = f'"{sequences[0][:2]}"'
 	query = f'UPDATE {table_name} SET found = ? WHERE sequence = ?'
 
-	with connect_db(letter) as conn:
+	with connect_db(letter.lower()) as conn:
 		cursor = conn.cursor()
 		cursor.executemany(query, ((is_found, seq.lower()) for seq in sequences))  # Ensure sequences are lowercase
 		conn.commit()
@@ -50,10 +50,10 @@ def get_sequences_from_file(file_path: str) -> list[str]:
 
 
 def get_not_found_sequences(letter: str, second_letter: str) -> list[str]:
-    table_name = f'"{letter}{second_letter}"'
-    query = f'SELECT sequence FROM {table_name} WHERE found = 0'
+    table_name = f'"{letter.lower()}{second_letter.lower()}"'
+    query = f'SELECT sequence FROM {table_name.lower()} WHERE found = 0'
 
-    with connect_db(letter) as conn:
+    with connect_db(letter.lower()) as conn:
         cursor = conn.cursor()
         sequences = cursor.execute(query).fetchall()
         return [seq[0] for seq in sequences]
