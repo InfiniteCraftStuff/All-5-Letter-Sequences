@@ -50,13 +50,13 @@ def get_sequences_from_file(file_path: str) -> list[str]:
 
 
 def get_not_found_sequences(letter: str, second_letter: str) -> list[str]:
-    table_name = f'"{letter.lower()}{second_letter.lower()}"'
-    query = f'SELECT sequence FROM {table_name.lower()} WHERE found = 0'
+	table_name = f'"{letter.lower()}{second_letter.lower()}"'
+	query = f'SELECT sequence FROM {table_name.lower()} WHERE found = 0'
 
-    with connect_db(letter.lower()) as conn:
-        cursor = conn.cursor()
-        sequences = cursor.execute(query).fetchall()
-        return [seq[0] for seq in sequences]
+	with connect_db(letter.lower()) as conn:
+		cursor = conn.cursor()
+		sequences = cursor.execute(query).fetchall()
+		return [seq[0] for seq in sequences]
 
 
 def get_statistics(letter: str):
