@@ -26,7 +26,7 @@ logging.basicConfig(
 def get_all_stats():
     # Initialize variables
     letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    stats = {}
+    stats: dict[str, tuple[int, int, int]] = {}
     total_overall, found_overall = 0, 0
 
     # Step 1: Collect statistics for all letters
@@ -59,7 +59,10 @@ def get_all_stats():
         letter2 = letters[k + 13]  # N to Z (positions 13 to 25)
         found1, percentage1 = stats[letter1][1], stats[letter1][2]
         found2, percentage2 = stats[letter2][1], stats[letter2][2]
-        row = f"| {letter1.upper():<6} | {found1:<8,} | {percentage1:>9.2f}% | {letter2.upper():<6} | {found2:<8,} | {percentage2:>9.2f}% |\n"
+        row = (
+            f"| {letter1.upper():<6} | {found1:<8,} | {percentage1:>9.2f}% "
+            f"| {letter2.upper():<6} | {found2:<8,} | {percentage2:>9.2f}% |\n"
+        )
         stats_lines.append(row)
 
     # Add overall statistics

@@ -1,6 +1,7 @@
 import sqlite3
 import os
-from typing import Iterable
+from typing import LiteralString
+from collections.abc import Iterable
 import logging
 
 
@@ -15,7 +16,7 @@ def connect_db(letter: str):
     return sqlite3.connect(db_path)
 
 
-def get_is_found(sequence: str) -> bool | None:
+def get_is_found(sequence: LiteralString) -> bool | None:
     sequence = sequence.lower()  # Convert sequence to lowercase before processing
     if len(sequence) != 5:
         raise ValueError("Sequence must be 5 letters")
@@ -29,7 +30,7 @@ def get_is_found(sequence: str) -> bool | None:
         return bool(result[0]) if result else None
 
 
-def update_sequences(letter: str, sequences: Iterable[str], is_found=True):
+def update_sequences(letter: str, sequences: Iterable[str], is_found: bool = True):
     if not sequences:
         return
 
@@ -65,7 +66,7 @@ def get_not_found_sequences(letter: str, second_letter: str) -> list[str]:
         return [seq[0] for seq in sequences]
 
 
-def get_statistics(letter: str):
+def get_statistics(letter: LiteralString) -> tuple[int, int, int]:
     with connect_db(letter.lower()) as conn:
         cursor = conn.cursor()
         total, found = 0, 0
