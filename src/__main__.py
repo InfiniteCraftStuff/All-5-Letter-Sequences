@@ -10,7 +10,7 @@ SRC_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(SRC_DIR)
 
 FOUND_FILES_PATH = os.path.join(BASE_DIR, "found-files")
-LOG_FILE_PATH = os.path.join(BASE_DIR, "console.log")
+LOG_FILE_PATH = os.path.join(BASE_DIR, "logs", "console.log")
 ENV_FILE_PATH = os.path.join(BASE_DIR, ".env")
 STATS_FILE_PATH = os.path.join(BASE_DIR, "STATS.md")
 

@@ -1,6 +1,6 @@
 import sqlite3
 import os
-from typing import LiteralString
+from typing import LiteralString, NamedTuple
 from collections.abc import Iterable
 import logging
 
@@ -66,7 +66,13 @@ def get_not_found_sequences(letter: str, second_letter: str) -> list[str]:
         return [seq[0] for seq in sequences]
 
 
-def get_statistics(letter: LiteralString) -> tuple[int, int, int]:
+class Stats(NamedTuple):
+    total: int
+    found: int
+    percentage: int
+
+
+def get_statistics(letter: LiteralString) -> Stats:
     with connect_db(letter.lower()) as conn:
         cursor = conn.cursor()
         total, found = 0, 0
@@ -80,4 +86,4 @@ def get_statistics(letter: LiteralString) -> tuple[int, int, int]:
             found += cursor.execute(found_query).fetchone()[0]
 
         percentage = (found / total * 100) if total else 0
-        return total, found, percentage
+        return Stats(total, found, percentage)

@@ -16,7 +16,9 @@ def main():
                 table_name = f'"{first_letter}{second_letter}"'
 
                 combinations = itertools.product(string.ascii_lowercase, repeat=3)
-                sequences = [f'{first_letter}{second_letter}{"".join(combo)}' for combo in combinations]
+                sequences = [
+                    f'{first_letter}{second_letter}{"".join(combo)}' for combo in combinations
+                ]
 
                 cursor.executemany(
                     f"INSERT OR IGNORE INTO {table_name} (sequence) VALUES (?)",
