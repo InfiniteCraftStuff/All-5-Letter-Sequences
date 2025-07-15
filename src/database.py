@@ -69,13 +69,14 @@ def get_not_found_sequences(letter: str, second_letter: str) -> list[str]:
 class Stats(NamedTuple):
     total: int
     found: int
-    percentage: int
+    percentage: float
 
 
 def get_statistics(letter: LiteralString) -> Stats:
     with connect_db(letter.lower()) as conn:
         cursor = conn.cursor()
-        total, found = 0, 0
+        total: int = 0
+        found: int = 0
 
         for second_letter in "abcdefghijklmnopqrstuvwxyz":
             table_name = f'"{letter.lower()}{second_letter}"'

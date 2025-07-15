@@ -2,7 +2,7 @@ import os
 
 import logging
 
-from database import get_statistics
+from database import get_statistics, Stats
 from processing import process_single_file
 
 
@@ -26,13 +26,13 @@ logging.basicConfig(
 def get_all_stats():
     # Initialize variables
     letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-    stats: dict[str, tuple[int, int, int]] = {}
+    all_stats: dict[str, Stats] = {}
     total_overall, found_overall = 0, 0
 
     # Step 1: Collect statistics for all letters
     for letter in letters:
-        total, found, percentage = get_statistics(letter)
-        stats[letter] = (total, found, percentage)
+        total, found, percentage = stats = get_statistics(letter)
+        all_stats[letter] = stats
         total_overall += total
         found_overall += found
         logging.info(
@@ -57,8 +57,8 @@ def get_all_stats():
     for k in range(13):  # 0 to 12 covers all 13 pairs
         letter1 = letters[k]  # A to M (positions 0 to 12)
         letter2 = letters[k + 13]  # N to Z (positions 13 to 25)
-        found1, percentage1 = stats[letter1][1], stats[letter1][2]
-        found2, percentage2 = stats[letter2][1], stats[letter2][2]
+        found1, percentage1 = all_stats[letter1][1], all_stats[letter1][2]
+        found2, percentage2 = all_stats[letter2][1], all_stats[letter2][2]
         row = (
             f"| {letter1.upper():<6} | {found1:<8,} | {percentage1:>9.2f}% "
             f"| {letter2.upper():<6} | {found2:<8,} | {percentage2:>9.2f}% |\n"
