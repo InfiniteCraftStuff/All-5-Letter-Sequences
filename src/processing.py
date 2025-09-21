@@ -1,7 +1,8 @@
 import os
 from time import time
 import logging
-from database import update_sequences, get_sequences_from_file
+
+from .database import update_sequences, get_sequences_from_file
 
 
 def process_batch(letter: str, sequences: list[str]):

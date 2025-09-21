@@ -2,8 +2,8 @@ import os
 
 import logging
 
-from database import get_statistics, Stats
-from processing import process_single_file
+from .database import get_statistics, Stats
+from .processing import process_single_file
 
 
 SRC_DIR = os.path.dirname(os.path.abspath(__file__))
