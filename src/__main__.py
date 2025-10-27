@@ -31,13 +31,10 @@ def get_all_stats():
 
     # Step 1: Collect statistics for all letters
     for letter in letters:
-        total, found, percentage = stats = get_statistics(letter)
+        total, found, _percentage = stats = get_statistics()
         all_stats[letter] = stats
         total_overall += total
         found_overall += found
-        logging.info(
-            f"Letter {letter.upper()}: {found:<7,} / {total:,} sequences found ({percentage:.2f}%)"
-        )
 
     # Calculate overall percentage
     overall_percentage = (found_overall / total_overall * 100) if total_overall else 0
@@ -82,8 +79,6 @@ def process_everything():
 
 
 def main():
-    get_all_stats()
-    process_everything()
     get_all_stats()
 
 

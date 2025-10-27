@@ -5,14 +5,14 @@ import logging
 from .database import update_sequences, get_sequences_from_file
 
 
-def process_batch(letter: str, sequences: list[str]):
+def process_batch(sequences: list[str]):
     grouped_sequences: list[list[str]] = [[] for _ in range(26)]
 
     for seq in sequences:
         seq = seq.lower()
         index = ord(seq[1]) - 97
         if index < 0 or index >= 26:
-            logging.error(f"Invalid sequence {seq} for letter {letter}. Skipping.")
+            logging.error(f"Invalid sequence {seq}. Skipping.")
             continue
         grouped_sequences[ord(seq[1]) - 97].append(seq)
 
@@ -20,16 +20,16 @@ def process_batch(letter: str, sequences: list[str]):
         if batch:
             logging.info(f"Processing batch {batch[0][:2]} ({len(batch)} sequences)")
             batch_start = time()
-            update_sequences(letter, batch)
+            update_sequences(batch)
             logging.info(f"Batch {batch[0][:2]} processed in {time() - batch_start:.2f} seconds")
 
 
-def process_letter(letter: str, sequences: list[str]):
-    logging.info(f"\n--- Processing sequences for letter {letter} ---")
+def process_letter(sequences: list[str]):
+    logging.info("\n--- Processing sequences ---")
     start_time = time()
 
-    process_batch(letter, sequences)
-    logging.info(f"--- Completed letter {letter} in {time() - start_time:.2f} seconds ---\n")
+    process_batch(sequences)
+    logging.info(f"--- Completed in {time() - start_time:.2f} seconds ---\n")
 
 
 def process_single_file(file_path: str):
@@ -49,8 +49,7 @@ def process_single_file(file_path: str):
         grouped_sequences[ord(seq[0]) - 97].append(seq)
 
     # Now process each batch of sequences for each letter
-    for i, batch in enumerate(grouped_sequences):
+    for batch in grouped_sequences:
         if batch:
-            letter = chr(i + 97)  # Convert index to letter
-            logging.info(f"Processing batch for letter {letter} ({len(batch)} sequences)")
-            process_letter(letter, batch)
+            logging.info(f"Processing batch ({len(batch)} sequences)")
+            process_letter(batch)
