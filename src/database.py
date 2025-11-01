@@ -1,5 +1,5 @@
 import sqlite3
-import os
+import os.path
 from typing import LiteralString, NamedTuple
 from collections.abc import Iterable
 import logging
@@ -8,7 +8,7 @@ import logging
 SRC_DIR = os.path.dirname(os.path.abspath(__file__))
 BASE_DIR = os.path.dirname(SRC_DIR)
 
-DB_FILE = os.path.join(BASE_DIR, "databases", "database.db")
+DB_FILE = os.path.join(BASE_DIR, "database", "database.db")
 
 
 def connect_db():
@@ -16,7 +16,7 @@ def connect_db():
 
 
 def get_is_found(sequence: LiteralString) -> bool | None:
-    sequence = sequence.lower()  # Convert sequence to lowercase before processing
+    sequence = sequence.lower()
     if len(sequence) != 5:
         raise ValueError("Sequence must be 5 letters")
 
@@ -28,17 +28,15 @@ def get_is_found(sequence: LiteralString) -> bool | None:
         return bool(result[0]) if result else None
 
 
-def update_sequences(sequences: Iterable[str], is_found: bool = True):
+def update_sequences(sequences: Iterable[str]):
     if not sequences:
         return
 
-    query = "UPDATE sequences SET found = ? WHERE sequence = ?"
+    query = "UPDATE sequences SET found = 1 WHERE sequence = ?"
 
     with connect_db() as conn:
         cursor = conn.cursor()
-        cursor.executemany(
-            query, ((is_found, seq.lower()) for seq in sequences)
-        )  # Ensure sequences are lowercase
+        cursor.executemany(query, (seq.lower() for seq in sequences))
         conn.commit()
 
 

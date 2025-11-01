@@ -2,14 +2,9 @@
 
 *.pyc
 *.log
-*.spec
-*.bat
+*.db
 
 logs/
 temp/
-build/
-dist/
 
 __pycache__/
-
-/found-files

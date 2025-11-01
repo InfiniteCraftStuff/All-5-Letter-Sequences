@@ -42,13 +42,11 @@ def process_single_file(file_path: str):
         logging.info("No sequences found. Skipping.\n")
         return
 
-    # Split sequences by letter
     grouped_sequences: list[list[str]] = [[] for _ in range(26)]
     for seq in sequences:
-        seq = seq.lower()  # Ensure sequence is lowercase
+        seq = seq.lower()
         grouped_sequences[ord(seq[0]) - 97].append(seq)
 
-    # Now process each batch of sequences for each letter
     for batch in grouped_sequences:
         if batch:
             logging.info(f"Processing batch ({len(batch)} sequences)")
