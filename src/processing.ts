@@ -17,12 +17,12 @@ function processBatch(sequences: string[]) {
   for (const batch of groupedSequences) {
     if (batch.length > 0) {
       console.info(
-        `Processing batch ${batch[0].slice(0, 2)} (${batch.length} sequences)`
+        `Processing batch ${batch[0]!.slice(0, 2)} (${batch.length} sequences)`
       );
       const batchStart = Date.now();
       markSequencesAsFound(batch);
       console.info(
-        `Batch ${batch[0].slice(0, 2)} processed in ${(
+        `Batch ${batch[0]!.slice(0, 2)} processed in ${(
           (Date.now() - batchStart) /
           1000
         ).toFixed(2)} seconds`

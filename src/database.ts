@@ -16,12 +16,12 @@ export function getIsFound(sequence: string): boolean {
 
   const db = connectDb();
   const query = "SELECT found FROM sequences WHERE sequence = ?";
-  const result = db.query(query).get(loweredSequence) as { found: 0 | 1 };
+  const result = db.query<{ found: 0 | 1 }, string>(query).get(loweredSequence);
   db.close();
-  return !!result.found;
+  return !!result?.found;
 }
 
-export function markSequencesAsFound(sequences: string[]) {
+export function markSequencesAsFound(sequences: string[]): void {
   if (!sequences.length) {
     return;
   }
@@ -57,21 +57,27 @@ export async function getSequencesFromFile(
 export function getNotFoundSequences(): string[] {
   const db = connectDb();
   const query = "SELECT sequence FROM sequences WHERE found = 0";
-  const results = db.query(query).all() as { sequence: string }[];
+  const results = db.query<{ sequence: string }, []>(query).all();
   db.close();
   return results.map((row) => row.sequence);
 }
 
 export function getStatistics() {
   const db = connectDb();
-  const totalQuery = "SELECT COUNT(*) as count FROM sequences";
-  const foundQuery = "SELECT COUNT(*) as count FROM sequences WHERE found = 1";
-  const totalResult = db.query(totalQuery).get() as { count: number };
-  const foundResult = db.query(foundQuery).get() as { count: number };
-  db.close();
 
-  const total = totalResult?.count ?? 0;
-  const found = foundResult?.count ?? 0;
-  const percentage = total > 0 ? (found / total) * 100 : 0;
-  return { total, found, percentage } as const;
+  const query = `
+    SELECT 
+      SUBSTR(sequence, 1, 1) AS letter,
+      SUM(found) AS found
+    FROM sequences 
+    GROUP BY letter
+  `;
+  const results = db.query<{ letter: string; found: number }, []>(query).all();
+  db.close();
+  const perLetterTotal = 26 ** 4;
+  return results.map((letterStat) => ({
+    letter: letterStat.letter,
+    found: letterStat.found,
+    percentage: (letterStat.found / perLetterTotal) * 100,
+  }));
 }
