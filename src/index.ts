@@ -1,7 +1,9 @@
 import { getAllStats } from "./stats";
 
 function main() {
-  getAllStats();
+  /*
+   * Replace with CLI usage
+   */
 }
 
 main();
