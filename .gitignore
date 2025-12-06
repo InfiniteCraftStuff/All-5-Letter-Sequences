@@ -1,13 +1,5 @@
-.env
-
-*.pyc
-*.log
-*.db
-
-logs/
-temp/
-
-__pycache__/
-
-
 node_modules/
+
+/database/
+
+*.db
