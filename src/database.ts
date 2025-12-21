@@ -36,7 +36,7 @@ export function markSequencesAsFound(sequences: string[]): void {
 }
 
 export async function getSequencesFromFile(
-  filePath: string
+  filePath: string,
 ): Promise<string[]> {
   try {
     const content = await Bun.file(filePath).text();

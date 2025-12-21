@@ -1,9 +1,9 @@
 import { getAllStats } from "./stats";
 
 function main() {
-  /*
-   * Replace with CLI usage
-   */
+  if (process.argv[2] === "stats") {
+    return getAllStats();
+  }
 }
 
 main();

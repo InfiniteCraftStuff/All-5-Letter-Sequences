@@ -28,22 +28,14 @@ export function getAllStats() {
     const percentage1 = stat1.percentage;
     const found2 = stat2.found;
     const percentage2 = stat2.percentage;
-    const row = `| ${letter1.padEnd(6)} | ${found1
-      .toLocaleString()
-      .padEnd(8)} | ${percentage1.toFixed(2).padStart(9)}% | ${letter2.padEnd(
-      6
-    )} | ${found2.toLocaleString().padEnd(8)} | ${percentage2
-      .toFixed(2)
-      .padStart(9)}% |\n`;
+    const row = `| ${letter1.padEnd(6)} | ${found1.toLocaleString().padEnd(8)} | ${percentage1.toFixed(2).padStart(9)}% | ${letter2.padEnd(6)} | ${found2.toLocaleString().padEnd(8)} | ${percentage2.toFixed(2).padStart(9)}% |\n`;
     statLines.push(row);
   }
 
   statLines.push("\n| Total Sequences Found | Percentage |\n");
   statLines.push("|-----------------------|------------|\n");
   statLines.push(
-    `| ${foundOverall.toLocaleString().padEnd(21)} | ${overallPercentage
-      .toFixed(2)
-      .padStart(9)}% |\n`
+    `| ${foundOverall.toLocaleString().padEnd(21)} | ${overallPercentage.toFixed(2).padStart(9)}% |\n`,
   );
 
   Bun.write(STATS_FILE_PATH, statLines.join(""));

@@ -11,21 +11,18 @@ function processBatch(sequences: string[]) {
       console.error(`Invalid sequence ${loweredSeq}. Skipping.`);
       continue;
     }
-    groupedSequences[index].push(loweredSeq);
+    groupedSequences[index]!.push(loweredSeq);
   }
 
   for (const batch of groupedSequences) {
     if (batch.length > 0) {
       console.info(
-        `Processing batch ${batch[0]!.slice(0, 2)} (${batch.length} sequences)`
+        `Processing batch ${batch[0]!.slice(0, 2)} (${batch.length} sequences)`,
       );
       const batchStart = Date.now();
       markSequencesAsFound(batch);
       console.info(
-        `Batch ${batch[0]!.slice(0, 2)} processed in ${(
-          (Date.now() - batchStart) /
-          1000
-        ).toFixed(2)} seconds`
+        `Batch ${batch[0]!.slice(0, 2)} processed in ${((Date.now() - batchStart) / 1000).toFixed(2)} seconds`,
       );
     }
   }
@@ -37,9 +34,7 @@ function processLetter(sequences: string[]) {
 
   processBatch(sequences);
   console.info(
-    `--- Completed in ${((Date.now() - startTime) / 1000).toFixed(
-      2
-    )} seconds ---\n`
+    `--- Completed in ${((Date.now() - startTime) / 1000).toFixed(2)} seconds ---\n`,
   );
 }
 
@@ -62,7 +57,7 @@ export async function processSingleFile(filePath: string) {
     const loweredSeq = seq.toLowerCase(); // Ensure sequence is lowercase
     const index = loweredSeq.charCodeAt(0) - 97;
     if (index >= 0 && index < 26) {
-      groupedSequences[index].push(loweredSeq);
+      groupedSequences[index]!.push(loweredSeq);
     }
   }
 
