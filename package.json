@@ -3,7 +3,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "stats": "bun ./src stats"
+    "stats": "bun ./src stats",
+    "file": "bun ./src file"
   },
   "devDependencies": {
     "@types/bun": "^1.3.5",
