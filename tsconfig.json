@@ -4,9 +4,7 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "moduleDetection": "force",
-
-    "paths": { "~/*": ["./src/*"] },
-
+  
     "skipLibCheck": true,
 
     // Max strictness
